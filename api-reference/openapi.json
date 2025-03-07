@@ -1,58 +1,441 @@
 {
-  "openapi": "3.0.1",
+  "openapi": "3.0.0",
   "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
-    "license": {
-      "name": "MIT"
-    },
-    "version": "1.0.0"
+    "title": "API Documentation for VoismoAI",
+    "version": "1.0.0",
+    "description": "API documentation for VoismoAI app"
   },
   "servers": [
     {
-      "url": "http://sandbox.mintlify.com"
-    }
-  ],
-  "security": [
-    {
-      "bearerAuth": []
+      "url": "https://api.voismoai.com/api/v1/"
     }
   ],
   "paths": {
-    "/plants": {
+    "/actions": {
       "get": {
-        "description": "Returns all plants from the system that the user has access to",
+        "summary": "Retrieve all actions",
+        "tags": [
+          "Actions"
+        ],
+        "responses": {
+          "200": {
+            "description": "Actions retrieved successfully"
+          },
+          "500": {
+            "description": "An error occurred while retrieving actions"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new action",
+        "tags": [
+          "Actions"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "description",
+                  "section"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "API": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Action created successfully"
+          },
+          "500": {
+            "description": "An error occurred while creating the action"
+          }
+        }
+      }
+    },
+    "/actions/{id}": {
+      "get": {
+        "summary": "Get action by ID",
+        "tags": [
+          "Actions"
+        ],
         "parameters": [
           {
-            "name": "limit",
-            "in": "query",
-            "description": "The maximum number of results to return",
+            "in": "path",
+            "name": "id",
+            "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int32"
+              "type": "string"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Plant"
+            "description": "Action retrieved successfully"
+          },
+          "404": {
+            "description": "Action not found"
+          },
+          "500": {
+            "description": "An error occurred while retrieving the action"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update action by ID",
+        "tags": [
+          "Actions"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "API": {
+                    "type": "string"
                   }
                 }
               }
             }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Action updated successfully"
           },
-          "400": {
-            "description": "Unexpected error",
+          "404": {
+            "description": "Action not found"
+          },
+          "500": {
+            "description": "An error occurred while updating the action"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete action by ID",
+        "tags": [
+          "Actions"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Action deleted successfully"
+          },
+          "404": {
+            "description": "Action not found"
+          },
+          "500": {
+            "description": "An error occurred while deleting the action"
+          }
+        }
+      }
+    },
+    "/actions/fetch": {
+      "post": {
+        "summary": "Fetch actions based on criteria",
+        "tags": [
+          "Actions"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Actions fetched successfully"
+          },
+          "500": {
+            "description": "An error occurred while fetching actions"
+          }
+        }
+      }
+    },
+    "/agents": {
+      "get": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Get Agent List",
+        "description": "Returns all agent list",
+        "responses": {
+          "200": {
+            "description": "A successful response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/agents/create": {
+      "post": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Create a new agent",
+        "description": "Creates a new agent with the provided data",
+        "responses": {
+          "200": {
+            "description": "Agent created successfully"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/agents/{id}": {
+      "get": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Get agent by ID",
+        "description": "Retrieves a single agent by its ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "ID of the agent to retrieve"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Agent retrieved successfully"
+          },
+          "404": {
+            "description": "Agent not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Delete agent",
+        "description": "Deletes an agent from the system",
+        "responses": {
+          "200": {
+            "description": "Agent deleted successfully"
+          }
+        }
+      }
+    },
+    "/agents/{id}/delete": {
+      "post": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Delete agent by ID",
+        "description": "Deletes an agent by its ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "ID of the agent to delete"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Agent deleted successfully"
+          },
+          "404": {
+            "description": "Agent not found"
+          }
+        }
+      }
+    },
+    "/agents/update": {
+      "put": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Update agent",
+        "description": "Updates an existing agent's information",
+        "responses": {
+          "200": {
+            "description": "Agent updated successfully"
+          },
+          "404": {
+            "description": "Agent not found"
+          }
+        }
+      }
+    },
+    "/agents/generate_prompt": {
+      "post": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Generate agent prompt",
+        "description": "Generates a result based on agent prompt",
+        "responses": {
+          "200": {
+            "description": "Prompt generated successfully"
+          }
+        }
+      }
+    },
+    "/agents/update_agent_name_logo": {
+      "post": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Update agent name and logo",
+        "description": "Updates an agent's name and logo",
+        "responses": {
+          "200": {
+            "description": "Name and logo updated successfully"
+          }
+        }
+      }
+    },
+    "/agents/duplicate_agents": {
+      "post": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Duplicate This Agent",
+        "description": "Creates copies of existing agents",
+        "responses": {
+          "200": {
+            "description": "Agents duplicated successfully"
+          }
+        }
+      }
+    },
+    "/agents/update_agent_rate": {
+      "post": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Update agent rates",
+        "description": "Updates the rates for an agent",
+        "responses": {
+          "200": {
+            "description": "Agent rates updated successfully"
+          }
+        }
+      }
+    },
+    "/agents/list_agent_rates": {
+      "post": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "List agent rates",
+        "description": "Retrieves a list of all agent rates",
+        "responses": {
+          "200": {
+            "description": "Agent rates retrieved successfully"
+          }
+        }
+      }
+    },
+    "/agents/get_agent_rates": {
+      "post": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Get agent rates",
+        "description": "Retrieves rates for a specific agent",
+        "responses": {
+          "200": {
+            "description": "Agent rates retrieved successfully"
+          }
+        }
+      }
+    },
+    "/agents/delete_agent_rates": {
+      "post": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Delete agent rates",
+        "description": "Deletes rates for a specific agent",
+        "responses": {
+          "200": {
+            "description": "Agent rates deleted successfully"
+          }
+        }
+      }
+    },
+    "/api-keys": {
+      "get": {
+        "tags": [
+          "API Keys"
+        ],
+        "summary": "Get API Key List",
+        "description": "Returns all API keys for the authenticated user",
+        "responses": {
+          "200": {
+            "description": "A successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
                 }
               }
             }
@@ -60,35 +443,3864 @@
         }
       },
       "post": {
-        "description": "Creates a new plant in the store",
+        "tags": [
+          "API Keys"
+        ],
+        "summary": "Create a new API key",
+        "description": "Creates a new API key with the provided name and permissions",
         "requestBody": {
-          "description": "Plant to add to the store",
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewPlant"
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Name for the API key"
+                  },
+                  "permissions": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "List of permissions for this key"
+                  }
+                }
               }
             }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "API key created successfully"
           },
-          "required": true
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api-keys/{id}": {
+      "delete": {
+        "tags": [
+          "API Keys"
+        ],
+        "summary": "Delete API key",
+        "description": "Permanently deletes an API key from the system",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "ID of the API key to delete"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "API key deleted successfully"
+          },
+          "404": {
+            "description": "API key not found"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "summary": "Login user",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
         },
         "responses": {
           "200": {
-            "description": "plant response",
+            "description": "Login successful",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Plant"
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string"
+                    },
+                    "user": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  }
                 }
               }
             }
           },
+          "401": {
+            "description": "Invalid credentials"
+          }
+        }
+      }
+    },
+    "/auth/verify/{code}": {
+      "post": {
+        "summary": "Verify user email",
+        "tags": [
+          "Auth"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "code",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Email verified successfully"
+          },
           "400": {
-            "description": "unexpected error",
+            "description": "Invalid verification code"
+          }
+        }
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "summary": "Register a new user",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "email",
+                  "password",
+                  "phone"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  },
+                  "avatar": {
+                    "type": "string"
+                  },
+                  "language": {
+                    "type": "string"
+                  },
+                  "currency": {
+                    "type": "string"
+                  },
+                  "theme": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User registered successfully"
+          },
+          "400": {
+            "description": "Invalid input data"
+          }
+        }
+      }
+    },
+    "/auth/generate-code": {
+      "post": {
+        "summary": "Generate a verification code",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/forgot-password": {
+      "post": {
+        "summary": "Request password reset",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "The email address of the user"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password reset email sent successfully"
+          },
+          "404": {
+            "description": "No user found with that email address"
+          },
+          "500": {
+            "description": "Error sending password reset email"
+          }
+        }
+      }
+    },
+    "/auth/reset-password/{token}": {
+      "get": {
+        "summary": "Verify password reset token",
+        "tags": [
+          "Auth"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Token is valid"
+          },
+          "400": {
+            "description": "Token is invalid or has expired"
+          }
+        }
+      },
+      "post": {
+        "summary": "Reset password with token",
+        "tags": [
+          "Auth"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "password",
+                  "confirmPassword"
+                ],
+                "properties": {
+                  "password": {
+                    "type": "string",
+                    "description": "New password"
+                  },
+                  "confirmPassword": {
+                    "type": "string",
+                    "description": "Confirm new password"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password has been reset successfully"
+          },
+          "400": {
+            "description": "Invalid input or expired token"
+          }
+        }
+      }
+    },
+    "/auth/change-password": {
+      "post": {
+        "summary": "Change password (for logged-in users)",
+        "tags": [
+          "Auth"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "currentPassword",
+                  "newPassword",
+                  "confirmPassword"
+                ],
+                "properties": {
+                  "currentPassword": {
+                    "type": "string",
+                    "description": "Current password"
+                  },
+                  "newPassword": {
+                    "type": "string",
+                    "description": "New password"
+                  },
+                  "confirmPassword": {
+                    "type": "string",
+                    "description": "Confirm new password"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password changed successfully"
+          },
+          "400": {
+            "description": "Invalid input data or current password is incorrect"
+          },
+          "401": {
+            "description": "Unauthorized - user not logged in"
+          }
+        }
+      }
+    },
+    "/billing": {
+      "get": {
+        "summary": "Retrieve all cards",
+        "tags": [
+          "Billing"
+        ],
+        "responses": {
+          "200": {
+            "description": "Cards retrieved successfully"
+          },
+          "500": {
+            "description": "An error occurred while retrieving cards"
+          }
+        }
+      }
+    },
+    "/billing/fetch": {
+      "get": {
+        "summary": "Fetch billing",
+        "tags": [
+          "Billing"
+        ],
+        "responses": {
+          "200": {
+            "description": "Billing fetched successfully"
+          },
+          "500": {
+            "description": "An error occurred while fetching the billing"
+          }
+        }
+      }
+    },
+    "/cards/{id}": {
+      "get": {
+        "summary": "Get a card by id",
+        "tags": [
+          "Cards"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The card id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Card retrieved successfully"
+          },
+          "404": {
+            "description": "Card not found"
+          },
+          "500": {
+            "description": "An error occurred while retrieving the card"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a card by id",
+        "tags": [
+          "Cards"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The card id"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "cardholderName": {
+                    "type": "string"
+                  },
+                  "stripeCustomerId": {
+                    "type": "string"
+                  },
+                  "stripeCardId": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Card updated successfully"
+          },
+          "404": {
+            "description": "Card not found"
+          },
+          "500": {
+            "description": "An error occurred while updating the card"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a card by id",
+        "tags": [
+          "Cards"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The card id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Card deleted successfully"
+          },
+          "404": {
+            "description": "Card not found"
+          },
+          "500": {
+            "description": "An error occurred while deleting the card"
+          }
+        }
+      }
+    },
+    "/calls": {
+      "get": {
+        "summary": "Retrieve all calls",
+        "tags": [
+          "Calls"
+        ],
+        "responses": {
+          "200": {
+            "description": "Calls retrieved successfully"
+          },
+          "500": {
+            "description": "An error occurred while retrieving calls"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new call",
+        "tags": [
+          "Calls"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "agent": {
+                    "type": "string"
+                  },
+                  "lead": {
+                    "type": "string"
+                  },
+                  "from": {
+                    "type": "string"
+                  },
+                  "to": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  },
+                  "recordURL": {
+                    "type": "string"
+                  },
+                  "transcription": {
+                    "type": "string"
+                  },
+                  "summary": {
+                    "type": "string"
+                  },
+                  "startTime": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "endTime": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "duration": {
+                    "type": "number"
+                  },
+                  "campaign": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Call created successfully"
+          },
+          "500": {
+            "description": "An error occurred while creating the call"
+          }
+        }
+      }
+    },
+    "/calls/{id}": {
+      "get": {
+        "summary": "Retrieve a single call by id",
+        "tags": [
+          "Calls"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The call id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Call retrieved successfully"
+          },
+          "404": {
+            "description": "Call not found"
+          },
+          "500": {
+            "description": "An error occurred while retrieving the call"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a call by id",
+        "tags": [
+          "Calls"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The call id"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "agent": {
+                    "type": "string"
+                  },
+                  "lead": {
+                    "type": "string"
+                  },
+                  "from": {
+                    "type": "string"
+                  },
+                  "to": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  },
+                  "recordURL": {
+                    "type": "string"
+                  },
+                  "transcription": {
+                    "type": "string"
+                  },
+                  "summary": {
+                    "type": "string"
+                  },
+                  "startTime": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "endTime": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "duration": {
+                    "type": "number"
+                  },
+                  "campaign": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Call updated successfully"
+          },
+          "404": {
+            "description": "Call not found"
+          },
+          "500": {
+            "description": "An error occurred while updating the call"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a call by id",
+        "tags": [
+          "Calls"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The call id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Call deleted successfully"
+          },
+          "404": {
+            "description": "Call not found"
+          },
+          "500": {
+            "description": "An error occurred while deleting the call"
+          }
+        }
+      }
+    },
+    "/calls/fetch": {
+      "post": {
+        "summary": "Fetch calls based on criteria",
+        "tags": [
+          "Calls"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Calls fetched successfully"
+          },
+          "500": {
+            "description": "An error occurred while fetching calls"
+          }
+        }
+      }
+    },
+    "/campaigns": {
+      "get": {
+        "summary": "Retrieve all campaigns",
+        "tags": [
+          "Campaigns"
+        ],
+        "responses": {
+          "200": {
+            "description": "Campaigns retrieved successfully"
+          },
+          "500": {
+            "description": "An error occurred while retrieving campaigns"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new campaign",
+        "tags": [
+          "Campaigns"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "company": {
+                    "type": "string"
+                  },
+                  "agent": {
+                    "type": "string"
+                  },
+                  "group": {
+                    "type": "string"
+                  },
+                  "startTime": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "endTime": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "scheduledDate": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "limitBudget": {
+                    "type": "number"
+                  },
+                  "enabled": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Campaign created successfully"
+          },
+          "500": {
+            "description": "An error occurred while creating the campaign"
+          }
+        }
+      }
+    },
+    "/campaigns/{id}": {
+      "get": {
+        "summary": "Retrieve a single campaign by id",
+        "tags": [
+          "Campaigns"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The campaign id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Campaign retrieved successfully"
+          },
+          "404": {
+            "description": "Campaign not found"
+          },
+          "500": {
+            "description": "An error occurred while retrieving the campaign"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a campaign by id",
+        "tags": [
+          "Campaigns"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The campaign id"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "company": {
+                    "type": "string"
+                  },
+                  "agent": {
+                    "type": "string"
+                  },
+                  "group": {
+                    "type": "string"
+                  },
+                  "startTime": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "endTime": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "scheduledDate": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "limitBudget": {
+                    "type": "number"
+                  },
+                  "enabled": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Campaign updated successfully"
+          },
+          "404": {
+            "description": "Campaign not found"
+          },
+          "500": {
+            "description": "An error occurred while updating the campaign"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a campaign by id",
+        "tags": [
+          "Campaigns"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The campaign id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Campaign deleted successfully"
+          },
+          "404": {
+            "description": "Campaign not found"
+          },
+          "500": {
+            "description": "An error occurred while deleting the campaign"
+          }
+        }
+      }
+    },
+    "/cards": {
+      "get": {
+        "summary": "Retrieve all cards",
+        "tags": [
+          "Cards"
+        ],
+        "responses": {
+          "200": {
+            "description": "Cards retrieved successfully"
+          },
+          "500": {
+            "description": "An error occurred while retrieving cards"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new card",
+        "tags": [
+          "Cards"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "token",
+                  "cardholderName"
+                ],
+                "properties": {
+                  "token": {
+                    "type": "string"
+                  },
+                  "cardholderName": {
+                    "type": "string"
+                  },
+                  "stripeCustomerId": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Card created successfully"
+          },
+          "400": {
+            "description": "Token is required"
+          },
+          "500": {
+            "description": "An error occurred while creating the card"
+          }
+        }
+      }
+    },
+    "/cards/fetch": {
+      "post": {
+        "summary": "Fetch cards based on criteria",
+        "tags": [
+          "Cards"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Cards fetched successfully"
+          },
+          "500": {
+            "description": "An error occurred while fetching cards"
+          }
+        }
+      }
+    },
+    "/cards/default_card": {
+      "post": {
+        "summary": "Set a card as default",
+        "tags": [
+          "Cards"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "cardId": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Card set as default successfully"
+          },
+          "404": {
+            "description": "Card not found"
+          },
+          "500": {
+            "description": "An error occurred while setting the card as default"
+          }
+        }
+      }
+    },
+    "/cards/set_default_card": {
+      "post": {
+        "summary": "Set a card as default",
+        "tags": [
+          "Cards"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "cardId": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Card set as default successfully"
+          },
+          "404": {
+            "description": "Card not found"
+          },
+          "500": {
+            "description": "An error occurred while setting the card as default"
+          }
+        }
+      }
+    },
+    "/company/menu": {
+      "get": {
+        "summary": "Fetch companies menu",
+        "tags": [
+          "Companies"
+        ],
+        "responses": {
+          "200": {
+            "description": "Companies retrieved successfully"
+          },
+          "500": {
+            "description": "An error occurred while retrieving companies"
+          }
+        }
+      }
+    },
+    "/company/update_plan": {
+      "post": {
+        "summary": "Update a company plan",
+        "tags": [
+          "Companies"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "companyId"
+                ],
+                "properties": {
+                  "companyId": {
+                    "type": "string"
+                  },
+                  "planId": {
+                    "type": "string"
+                  },
+                  "agentsCount": {
+                    "type": "number"
+                  },
+                  "concurrentConversations": {
+                    "type": "number"
+                  },
+                  "servers": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Company payment updated successfully"
+          },
+          "404": {
+            "description": "Company or plan not found"
+          },
+          "500": {
+            "description": "An error occurred while updating the company payment"
+          }
+        }
+      }
+    },
+    "/company": {
+      "get": {
+        "summary": "Retrieve all companies",
+        "tags": [
+          "Companies"
+        ],
+        "responses": {
+          "200": {
+            "description": "Companies retrieved successfully"
+          },
+          "500": {
+            "description": "An error occurred while retrieving companies"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new company",
+        "tags": [
+          "Companies"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "owner",
+                  "info"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "owner": {
+                    "type": "string",
+                    "description": "User ID of company owner"
+                  },
+                  "info": {
+                    "type": "object",
+                    "required": [
+                      "dba"
+                    ],
+                    "properties": {
+                      "logo": {
+                        "type": "string",
+                        "format": "uri"
+                      },
+                      "dba": {
+                        "type": "string"
+                      },
+                      "address": {
+                        "type": "object",
+                        "properties": {
+                          "street": {
+                            "type": "string"
+                          },
+                          "city": {
+                            "type": "string"
+                          },
+                          "state": {
+                            "type": "string"
+                          },
+                          "postalCode": {
+                            "type": "string"
+                          },
+                          "country": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "description": {
+                        "type": "string"
+                      },
+                      "website": {
+                        "type": "string",
+                        "format": "uri"
+                      },
+                      "industry": {
+                        "type": "string"
+                      },
+                      "foundedYear": {
+                        "type": "number",
+                        "minimum": 1800
+                      }
+                    }
+                  },
+                  "payment": {
+                    "type": "object",
+                    "properties": {
+                      "balance": {
+                        "type": "number"
+                      },
+                      "cards": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "plan": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "team": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "user",
+                        "role"
+                      ],
+                      "properties": {
+                        "user": {
+                          "type": "string"
+                        },
+                        "role": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Company created successfully"
+          },
+          "500": {
+            "description": "An error occurred while creating the company"
+          }
+        }
+      }
+    },
+    "/company/{id}": {
+      "get": {
+        "summary": "Get a company by id",
+        "tags": [
+          "Companies"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The company id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Company retrieved successfully"
+          },
+          "404": {
+            "description": "Company not found"
+          },
+          "500": {
+            "description": "An error occurred while retrieving the company"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a company by id",
+        "tags": [
+          "Companies"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The company id"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Company updated successfully"
+          },
+          "404": {
+            "description": "Company not found"
+          },
+          "500": {
+            "description": "An error occurred while updating the company"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a company by id",
+        "tags": [
+          "Companies"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The company id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Company deleted successfully"
+          },
+          "404": {
+            "description": "Company not found"
+          },
+          "500": {
+            "description": "An error occurred while deleting the company"
+          }
+        }
+      }
+    },
+    "/dids": {
+      "get": {
+        "summary": "Retrieve all DIDs",
+        "tags": [
+          "DIDs"
+        ],
+        "responses": {
+          "200": {
+            "description": "DIDs retrieved successfully"
+          },
+          "500": {
+            "description": "An error occurred while retrieving DIDs"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new DID",
+        "tags": [
+          "DIDs"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "number": {
+                    "type": "string"
+                  },
+                  "inboundAgent": {
+                    "type": "string"
+                  },
+                  "outboundAgents": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "sipIp": {
+                    "type": "string"
+                  },
+                  "sipUser": {
+                    "type": "string"
+                  },
+                  "sipPass": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "DID created successfully"
+          },
+          "500": {
+            "description": "An error occurred while creating the DID"
+          }
+        }
+      }
+    },
+    "/dids/{id}": {
+      "get": {
+        "summary": "Retrieve a single DID by id",
+        "tags": [
+          "DIDs"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The DID id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "DID retrieved successfully"
+          },
+          "500": {
+            "description": "An error occurred while retrieving the DID"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a DID's agent by id",
+        "tags": [
+          "DIDs"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The DID id"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "number": {
+                    "type": "string"
+                  },
+                  "inboundAgent": {
+                    "type": "string"
+                  },
+                  "outboundAgents": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "sipIp": {
+                    "type": "string"
+                  },
+                  "sipUser": {
+                    "type": "string"
+                  },
+                  "sipPass": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "DID's agent updated successfully"
+          },
+          "404": {
+            "description": "DID not found"
+          },
+          "500": {
+            "description": "An error occurred while updating the DID's agent"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a DID by id",
+        "tags": [
+          "DIDs"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The DID id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "DID deleted successfully"
+          },
+          "500": {
+            "description": "An error occurred while deleting the DID"
+          }
+        }
+      }
+    },
+    "/dids/request/{id}": {
+      "post": {
+        "summary": "Request a specific DID by id",
+        "tags": [
+          "DIDs"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The DID id to request"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "DID request processed successfully"
+          },
+          "404": {
+            "description": "DID not found"
+          },
+          "500": {
+            "description": "An error occurred while processing the request"
+          }
+        }
+      }
+    },
+    "/dids/cancel": {
+      "post": {
+        "summary": "Cancel a specific DID by id",
+        "tags": [
+          "DIDs"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "The DID id to cancel"
+                  },
+                  "number": {
+                    "type": "string",
+                    "description": "The DID number to cancel"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "DID cancellation processed successfully"
+          },
+          "404": {
+            "description": "DID not found"
+          },
+          "500": {
+            "description": "An error occurred while processing the cancellation"
+          }
+        }
+      }
+    },
+    "/groups": {
+      "get": {
+        "summary": "Retrieve all groups",
+        "tags": [
+          "Groups"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "searchText",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Text to search in group's name or description"
+          },
+          {
+            "in": "query",
+            "name": "pageIndex",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Page index for pagination"
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Number of groups per page"
+          },
+          {
+            "in": "query",
+            "name": "sortOrder",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ]
+            },
+            "description": "Sort order for groups"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Groups retrieved successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "type": "object",
+                  "properties": {
+                    "docs": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "totalDocs": {
+                      "type": "integer"
+                    },
+                    "limit": {
+                      "type": "integer"
+                    },
+                    "page": {
+                      "type": "integer"
+                    },
+                    "totalPages": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An error occurred while retrieving groups"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new group",
+        "tags": [
+          "Groups"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "company": {
+                    "type": "string",
+                    "description": "The company ID associated with the group"
+                  },
+                  "leads": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Array of lead IDs associated with the group"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Group created successfully"
+          },
+          "500": {
+            "description": "An error occurred while creating the group"
+          }
+        }
+      }
+    },
+    "/groups/{id}": {
+      "get": {
+        "summary": "Retrieve a single group by id",
+        "tags": [
+          "Groups"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The group id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Group retrieved successfully"
+          },
+          "404": {
+            "description": "Group not found"
+          },
+          "500": {
+            "description": "An error occurred while retrieving the group"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a group by id",
+        "tags": [
+          "Groups"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The group id"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "company": {
+                    "type": "string",
+                    "description": "The company ID associated with the group"
+                  },
+                  "leads": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Array of lead IDs associated with the group"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Group updated successfully"
+          },
+          "404": {
+            "description": "Group not found"
+          },
+          "500": {
+            "description": "An error occurred while updating the group"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a group by id",
+        "tags": [
+          "Groups"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The group id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Group deleted successfully"
+          },
+          "404": {
+            "description": "Group not found"
+          },
+          "500": {
+            "description": "An error occurred while deleting the group"
+          }
+        }
+      }
+    },
+    "/knowledge": {
+      "get": {
+        "summary": "Retrieve all knowledge entries",
+        "tags": [
+          "Knowledge"
+        ],
+        "responses": {
+          "200": {
+            "description": "Knowledge entries retrieved successfully"
+          },
+          "500": {
+            "description": "An error occurred while retrieving knowledge entries"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new knowledge entry",
+        "tags": [
+          "Knowledge"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "file",
+                  "fileType",
+                  "company",
+                  "language"
+                ],
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "The file to be uploaded"
+                  },
+                  "fileType": {
+                    "type": "string",
+                    "enum": [
+                      "document",
+                      "audio",
+                      "video"
+                    ],
+                    "description": "The type of the file"
+                  },
+                  "language": {
+                    "type": "string",
+                    "enum": [
+                      "en",
+                      "es"
+                    ],
+                    "description": "The language of the file"
+                  },
+                  "agent": {
+                    "type": "string",
+                    "default": null,
+                    "description": "The agent ID associated with the knowledge"
+                  },
+                  "company": {
+                    "type": "string",
+                    "default": "675395a64a9563b208d1a700",
+                    "description": "The company ID associated with the knowledge"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Knowledge entry created successfully"
+          },
+          "500": {
+            "description": "An error occurred while creating the knowledge entry"
+          }
+        }
+      }
+    },
+    "/knowledge/{id}": {
+      "get": {
+        "summary": "Get a knowledge entry by id",
+        "tags": [
+          "Knowledge"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The knowledge entry id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Knowledge entry retrieved successfully"
+          },
+          "404": {
+            "description": "Knowledge entry not found"
+          },
+          "500": {
+            "description": "An error occurred while retrieving the knowledge entry"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a knowledge entry by id",
+        "tags": [
+          "Knowledge"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The knowledge entry id"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "content": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Knowledge entry updated successfully"
+          },
+          "404": {
+            "description": "Knowledge entry not found"
+          },
+          "500": {
+            "description": "An error occurred while updating the knowledge entry"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a knowledge entry by id",
+        "tags": [
+          "Knowledge"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The knowledge entry id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Knowledge entry deleted successfully"
+          },
+          "404": {
+            "description": "Knowledge entry not found"
+          },
+          "500": {
+            "description": "An error occurred while deleting the knowledge entry"
+          }
+        }
+      }
+    },
+    "/leads": {
+      "get": {
+        "summary": "Retrieve all leads",
+        "tags": [
+          "Leads"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "searchText",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Text to search in lead's first name, last name, email, or phone"
+          },
+          {
+            "in": "query",
+            "name": "companySearch",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Company ID to filter leads"
+          },
+          {
+            "in": "query",
+            "name": "pageIndex",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Page index for pagination"
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Number of leads per page"
+          },
+          {
+            "in": "query",
+            "name": "sortOrder",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ]
+            },
+            "description": "Sort order for leads"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Leads retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "docs": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "totalDocs": {
+                      "type": "integer"
+                    },
+                    "limit": {
+                      "type": "integer"
+                    },
+                    "page": {
+                      "type": "integer"
+                    },
+                    "totalPages": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An error occurred while retrieving leads"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new lead",
+        "tags": [
+          "Leads"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Lead created successfully"
+          },
+          "500": {
+            "description": "An error occurred while creating the lead"
+          }
+        }
+      }
+    },
+    "/leads/{id}": {
+      "get": {
+        "summary": "Retrieve a single lead by id",
+        "tags": [
+          "Leads"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The lead id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lead retrieved successfully"
+          },
+          "404": {
+            "description": "Lead not found"
+          },
+          "500": {
+            "description": "An error occurred while retrieving the lead"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a lead by id",
+        "tags": [
+          "Leads"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The lead id"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Lead updated successfully"
+          },
+          "404": {
+            "description": "Lead not found"
+          },
+          "500": {
+            "description": "An error occurred while updating the lead"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a lead by id",
+        "tags": [
+          "Leads"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The lead id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lead deleted successfully"
+          },
+          "404": {
+            "description": "Lead not found"
+          },
+          "500": {
+            "description": "An error occurred while deleting the lead"
+          }
+        }
+      }
+    },
+    "/leads/{id}/metadata": {
+      "put": {
+        "summary": "Update lead metadata by id",
+        "tags": [
+          "Leads"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The lead id"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "metadata": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Lead metadata updated successfully"
+          },
+          "404": {
+            "description": "Lead not found"
+          },
+          "500": {
+            "description": "An error occurred while updating the lead metadata"
+          }
+        }
+      }
+    },
+    "/plan": {
+      "get": {
+        "summary": "Retrieve all plans",
+        "tags": [
+          "Plans"
+        ],
+        "responses": {
+          "200": {
+            "description": "Plans retrieved successfully"
+          },
+          "500": {
+            "description": "An error occurred while retrieving plans"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new plan",
+        "tags": [
+          "Plans"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "monthlyPrice": {
+                    "type": "string"
+                  },
+                  "pagesHandled": {
+                    "type": "string"
+                  },
+                  "audioMinutes": {
+                    "type": "string"
+                  },
+                  "videoMinutes": {
+                    "type": "string"
+                  },
+                  "initialAITrainingSessions": {
+                    "type": "string"
+                  },
+                  "agentLimit": {
+                    "type": "string"
+                  },
+                  "concurrentConversations": {
+                    "type": "string"
+                  },
+                  "additionalAgentsPrice": {
+                    "type": "string"
+                  },
+                  "supportLanguages": {
+                    "type": "string"
+                  },
+                  "analyticsDashboard": {
+                    "type": "string"
+                  },
+                  "sentimentAnalysis": {
+                    "type": "string"
+                  },
+                  "customAIDevelopment": {
+                    "type": "string"
+                  },
+                  "quarterlyBusinessReviews": {
+                    "type": "string"
+                  },
+                  "dedicatedAccountManager": {
+                    "type": "string"
+                  },
+                  "premiumSupport": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Plan created successfully"
+          },
+          "500": {
+            "description": "An error occurred while creating the plan"
+          }
+        }
+      }
+    },
+    "/plan/{id}": {
+      "get": {
+        "summary": "Retrieve a single plan by id",
+        "tags": [
+          "Plans"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The plan id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Plan retrieved successfully"
+          },
+          "500": {
+            "description": "An error occurred while retrieving the plan"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a plan by id",
+        "tags": [
+          "Plans"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The plan id"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "monthlyPrice": {
+                    "type": "string"
+                  },
+                  "pagesHandled": {
+                    "type": "string"
+                  },
+                  "audioMinutes": {
+                    "type": "string"
+                  },
+                  "videoMinutes": {
+                    "type": "string"
+                  },
+                  "initialAITrainingSessions": {
+                    "type": "string"
+                  },
+                  "agentLimit": {
+                    "type": "string"
+                  },
+                  "concurrentConversations": {
+                    "type": "string"
+                  },
+                  "additionalAgentsPrice": {
+                    "type": "string"
+                  },
+                  "supportLanguages": {
+                    "type": "string"
+                  },
+                  "analyticsDashboard": {
+                    "type": "string"
+                  },
+                  "sentimentAnalysis": {
+                    "type": "string"
+                  },
+                  "customAIDevelopment": {
+                    "type": "string"
+                  },
+                  "quarterlyBusinessReviews": {
+                    "type": "string"
+                  },
+                  "dedicatedAccountManager": {
+                    "type": "string"
+                  },
+                  "premiumSupport": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Plan updated successfully"
+          },
+          "404": {
+            "description": "Plan not found"
+          },
+          "500": {
+            "description": "An error occurred while updating the plan"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a plan by id",
+        "tags": [
+          "Plans"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The plan id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Plan deleted successfully"
+          },
+          "500": {
+            "description": "An error occurred while deleting the plan"
+          }
+        }
+      }
+    },
+    "/plan/fetch": {
+      "post": {
+        "summary": "Fetch plans based on criteria",
+        "tags": [
+          "Plans"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Plans retrieved successfully"
+          },
+          "500": {
+            "description": "An error occurred while retrieving plans"
+          }
+        }
+      }
+    },
+    "/rates": {
+      "post": {
+        "summary": "Create a new rate",
+        "tags": [
+          "Rates"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "code": {
+                    "type": "string"
+                  },
+                  "destination": {
+                    "type": "string"
+                  },
+                  "costMin": {
+                    "type": "number"
+                  },
+                  "launchpad": {
+                    "type": "number"
+                  },
+                  "expansion": {
+                    "type": "number"
+                  },
+                  "engagement": {
+                    "type": "number"
+                  },
+                  "performance": {
+                    "type": "number"
+                  },
+                  "increment": {
+                    "type": "number"
+                  },
+                  "connectCharge": {
+                    "type": "number"
+                  },
+                  "additionalCost": {
+                    "type": "number"
+                  },
+                  "ttsCost": {
+                    "type": "number"
+                  },
+                  "engineCost": {
+                    "type": "number"
+                  },
+                  "totalCost": {
+                    "type": "number"
+                  },
+                  "marginPercentage": {
+                    "type": "number"
+                  },
+                  "margin": {
+                    "type": "number"
+                  },
+                  "incomingCalls": {
+                    "type": "number"
+                  },
+                  "salesPrice": {
+                    "type": "number"
+                  },
+                  "vipPrice": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Rate created successfully"
+          },
+          "500": {
+            "description": "An error occurred while creating the rate"
+          }
+        }
+      },
+      "get": {
+        "summary": "Retrieve all rates",
+        "tags": [
+          "Rates"
+        ],
+        "responses": {
+          "200": {
+            "description": "Rates retrieved successfully"
+          },
+          "500": {
+            "description": "An error occurred while retrieving rates"
+          }
+        }
+      }
+    },
+    "/rates/{id}": {
+      "get": {
+        "summary": "Get rate by ID",
+        "tags": [
+          "Rates"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Rate retrieved successfully"
+          },
+          "404": {
+            "description": "Rate not found"
+          },
+          "500": {
+            "description": "An error occurred while retrieving the rate"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update rate by ID",
+        "tags": [
+          "Rates"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Rate updated successfully"
+          },
+          "404": {
+            "description": "Rate not found"
+          },
+          "500": {
+            "description": "An error occurred while updating the rate"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete rate by ID",
+        "tags": [
+          "Rates"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Rate deleted successfully"
+          },
+          "404": {
+            "description": "Rate not found"
+          },
+          "500": {
+            "description": "An error occurred while deleting the rate"
+          }
+        }
+      }
+    },
+    "/rates/delete_all": {
+      "delete": {
+        "summary": "Delete all rates",
+        "tags": [
+          "Rates"
+        ],
+        "responses": {
+          "200": {
+            "description": "All rates deleted successfully"
+          },
+          "500": {
+            "description": "An error occurred while deleting all rates"
+          }
+        }
+      }
+    },
+    "/rates/import": {
+      "post": {
+        "summary": "Import rates from a file",
+        "tags": [
+          "Rates"
+        ],
+        "responses": {
+          "200": {
+            "description": "Rates imported successfully"
+          },
+          "500": {
+            "description": "An error occurred while importing rates"
+          }
+        }
+      }
+    },
+    "/roles": {
+      "get": {
+        "summary": "Retrieve all roles",
+        "tags": [
+          "Roles"
+        ],
+        "responses": {
+          "200": {
+            "description": "Roles retrieved successfully"
+          },
+          "500": {
+            "description": "An error occurred while retrieving roles"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new role",
+        "tags": [
+          "Roles"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "description"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "actions": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Action ID"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Role created successfully"
+          },
+          "500": {
+            "description": "An error occurred while creating the role"
+          }
+        }
+      }
+    },
+    "/roles/{id}": {
+      "get": {
+        "summary": "Retrieve a single role by id",
+        "tags": [
+          "Roles"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The role id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Role retrieved successfully"
+          },
+          "500": {
+            "description": "An error occurred while retrieving the role"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a role by id",
+        "tags": [
+          "Roles"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The role id"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "actions": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Action ID"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Role updated successfully"
+          },
+          "404": {
+            "description": "Role not found"
+          },
+          "500": {
+            "description": "An error occurred while updating the role"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a role by id",
+        "tags": [
+          "Roles"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The role id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Role deleted successfully"
+          },
+          "500": {
+            "description": "An error occurred while deleting the role"
+          }
+        }
+      }
+    },
+    "/roles/fetch": {
+      "post": {
+        "summary": "Fetch roles based on criteria",
+        "tags": [
+          "Roles"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Roles retrieved successfully"
+          },
+          "500": {
+            "description": "An error occurred while retrieving roles"
+          }
+        }
+      }
+    },
+    "/templates": {
+      "get": {
+        "summary": "Retrieve all agent templates",
+        "tags": [
+          "Templates"
+        ],
+        "responses": {
+          "200": {
+            "description": "Templates retrieved successfully"
+          },
+          "500": {
+            "description": "An error occurred while retrieving templates"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new agent template",
+        "tags": [
+          "Templates"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "identity": {
+                    "type": "string"
+                  },
+                  "goal": {
+                    "type": "string"
+                  },
+                  "task": {
+                    "type": "string"
+                  },
+                  "script": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Template created successfully"
+          },
+          "500": {
+            "description": "An error occurred while creating the template"
+          }
+        }
+      }
+    },
+    "/templates/{id}": {
+      "get": {
+        "summary": "Get an agent template by id",
+        "tags": [
+          "Templates"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The template id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Template retrieved successfully"
+          },
+          "500": {
+            "description": "An error occurred while retrieving the template"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update an agent template by id",
+        "tags": [
+          "Templates"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The template id"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "identity": {
+                    "type": "string"
+                  },
+                  "goal": {
+                    "type": "string"
+                  },
+                  "task": {
+                    "type": "string"
+                  },
+                  "script": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Template updated successfully"
+          },
+          "404": {
+            "description": "Template not found"
+          },
+          "500": {
+            "description": "An error occurred while updating the template"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete an agent template by id",
+        "tags": [
+          "Templates"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The template id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Template deleted successfully"
+          },
+          "404": {
+            "description": "Template not found"
+          },
+          "500": {
+            "description": "An error occurred while deleting the template"
+          }
+        }
+      }
+    },
+    "/templates/fetch": {
+      "post": {
+        "summary": "Fetch agent templates based on criteria",
+        "tags": [
+          "Templates"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Templates retrieved successfully"
+          },
+          "500": {
+            "description": "An error occurred while retrieving templates"
+          }
+        }
+      }
+    },
+    "/testzone/{id}/start": {
+      "post": {
+        "summary": "Start test zone by ID",
+        "tags": [
+          "Actions"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Test zone started successfully"
+          },
+          "404": {
+            "description": "Test zone not found"
+          },
+          "500": {
+            "description": "An error occurred while starting the test zone"
+          }
+        }
+      }
+    },
+    "/tickets": {
+      "get": {
+        "summary": "Retrieve all tickets",
+        "tags": [
+          "Tickets"
+        ],
+        "responses": {
+          "200": {
+            "description": "Tickets retrieved successfully"
+          },
+          "500": {
+            "description": "An error occurred while retrieving tickets"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new ticket",
+        "tags": [
+          "Tickets"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "subject": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string"
+                  },
+                  "priority": {
+                    "type": "string"
+                  },
+                  "createdBy": {
+                    "type": "string"
+                  },
+                  "assignedTo": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ticket created successfully"
+          },
+          "500": {
+            "description": "An error occurred while creating the ticket"
+          }
+        }
+      }
+    },
+    "/tickets/fetch": {
+      "get": {
+        "summary": "Retrieve all tickets",
+        "tags": [
+          "Tickets"
+        ],
+        "responses": {
+          "200": {
+            "description": "Tickets retrieved successfully"
+          },
+          "500": {
+            "description": "An error occurred while retrieving tickets"
+          }
+        }
+      }
+    },
+    "/tickets/{id}": {
+      "get": {
+        "summary": "Retrieve a single ticket by id",
+        "tags": [
+          "Tickets"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ticket id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ticket retrieved successfully"
+          },
+          "404": {
+            "description": "Ticket not found"
+          },
+          "500": {
+            "description": "An error occurred while retrieving the ticket"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a ticket by id",
+        "tags": [
+          "Tickets"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ticket id"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "subject": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string"
+                  },
+                  "priority": {
+                    "type": "string"
+                  },
+                  "assignedTo": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ticket updated successfully"
+          },
+          "404": {
+            "description": "Ticket not found"
+          },
+          "500": {
+            "description": "An error occurred while updating the ticket"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a ticket by id",
+        "tags": [
+          "Tickets"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ticket id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ticket deleted successfully"
+          },
+          "404": {
+            "description": "Ticket not found"
+          },
+          "500": {
+            "description": "An error occurred while deleting the ticket"
+          }
+        }
+      }
+    },
+    "/tickets/{id}/messages": {
+      "get": {
+        "summary": "Retrieve messages for a ticket",
+        "tags": [
+          "Tickets"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ticket id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Messages retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "message": {
+                        "type": "string"
+                      },
+                      "createdBy": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "isDeleted": {
+                        "type": "boolean"
+                      },
+                      "isRead": {
+                        "type": "boolean"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Ticket not found"
+          },
+          "500": {
+            "description": "An error occurred while retrieving messages"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update messages for a ticket",
+        "tags": [
+          "Tickets"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ticket id"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "createdBy": {
+                      "type": "string"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "isDeleted": {
+                      "type": "boolean"
+                    },
+                    "isRead": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Messages updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Message"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Ticket not found"
+          },
+          "500": {
+            "description": "An error occurred while updating messages"
+          }
+        }
+      }
+    },
+    "/tickets/{id}/attachments": {
+      "get": {
+        "summary": "Retrieve attachments for a ticket",
+        "tags": [
+          "Tickets"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ticket id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Attachments retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "url": {
+                        "type": "string"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "isDeleted": {
+                        "type": "boolean"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Ticket not found"
+          },
+          "500": {
+            "description": "An error occurred while retrieving attachments"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update attachments for a ticket",
+        "tags": [
+          "Tickets"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ticket id"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "url": {
+                      "type": "string"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "isDeleted": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Attachments updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "attachments": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Attachment"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Ticket not found"
+          },
+          "500": {
+            "description": "An error occurred while updating attachments"
+          }
+        }
+      }
+    },
+    "/users/refresh": {
+      "get": {
+        "summary": "Refresh user token",
+        "tags": [
+          "Users"
+        ],
+        "responses": {
+          "200": {
+            "description": "Token refreshed successfully"
+          }
+        }
+      }
+    },
+    "/users/{id}/change-password": {
+      "post": {
+        "summary": "Change user password",
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "password": {
+                    "type": "string",
+                    "description": "New password"
+                  },
+                  "confirmPassword": {
+                    "type": "string",
+                    "description": "Confirm new password"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password changed successfully"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/users/list": {
+      "post": {
+        "summary": "Get list of users with filters",
+        "tags": [
+          "Users"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "page": {
+                    "type": "number",
+                    "description": "Page number for pagination"
+                  },
+                  "limit": {
+                    "type": "number",
+                    "description": "Number of items per page"
+                  },
+                  "search": {
+                    "type": "string",
+                    "description": "Search term for filtering users"
+                  },
+                  "sortBy": {
+                    "type": "string",
+                    "description": "Field to sort by"
+                  },
+                  "sortOrder": {
+                    "type": "string",
+                    "enum": [
+                      "asc",
+                      "desc"
+                    ],
+                    "description": "Sort order"
+                  },
+                  "filters": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string",
+                        "enum": [
+                          "active",
+                          "inactive",
+                          "pending"
+                        ]
+                      },
+                      "language": {
+                        "type": "string"
+                      },
+                      "currency": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "List of users retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "users": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/User"
+                      }
+                    },
+                    "total": {
+                      "type": "number"
+                    },
+                    "page": {
+                      "type": "number"
+                    },
+                    "pages": {
+                      "type": "number"
+                    }
+                  }
                 }
               }
             }
@@ -96,100 +4308,422 @@
         }
       }
     },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
+    "/users/{id}": {
+      "get": {
+        "summary": "Get user by ID",
+        "tags": [
+          "Users"
+        ],
         "parameters": [
           {
-            "name": "id",
             "in": "path",
-            "description": "ID of plant to delete",
+            "name": "id",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int64"
+              "type": "string"
             }
           }
         ],
         "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
+          "200": {
+            "description": "User details retrieved successfully"
           },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
+          "404": {
+            "description": "User not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update user by ID",
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  },
+                  "avatar": {
+                    "type": "string"
+                  },
+                  "language": {
+                    "type": "string"
+                  },
+                  "currency": {
+                    "type": "string"
+                  },
+                  "theme": {
+                    "type": "string"
+                  }
                 }
               }
             }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User updated successfully"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete user by ID",
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User deleted successfully"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/users/send-invite": {
+      "post": {
+        "summary": "Send invite to user",
+        "tags": [
+          "Users"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "company": {
+                    "type": "string"
+                  },
+                  "role": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "email",
+                  "company",
+                  "role"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Invite sent successfully"
+          }
+        }
+      }
+    },
+    "/voices": {
+      "get": {
+        "summary": "Retrieve all voices",
+        "tags": [
+          "Voices"
+        ],
+        "responses": {
+          "200": {
+            "description": "Voices retrieved successfully"
+          },
+          "500": {
+            "description": "An error occurred while retrieving voices"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new voice",
+        "tags": [
+          "Voices"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "voiceId",
+                  "language"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "voiceId": {
+                    "type": "string"
+                  },
+                  "gender": {
+                    "type": "boolean"
+                  },
+                  "language": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Voice created successfully"
+          },
+          "500": {
+            "description": "An error occurred while creating the voice"
+          }
+        }
+      }
+    },
+    "/voices/{id}": {
+      "get": {
+        "summary": "Get a voice by id",
+        "tags": [
+          "Voices"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The voice id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Voice retrieved successfully"
+          },
+          "500": {
+            "description": "An error occurred while retrieving the voice"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a voice by id",
+        "tags": [
+          "Voices"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The voice id"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "voiceId": {
+                    "type": "string"
+                  },
+                  "gender": {
+                    "type": "boolean"
+                  },
+                  "language": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Voice updated successfully"
+          },
+          "404": {
+            "description": "Voice not found"
+          },
+          "500": {
+            "description": "An error occurred while updating the voice"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a voice by id",
+        "tags": [
+          "Voices"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The voice id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Voice deleted successfully"
+          },
+          "404": {
+            "description": "Voice not found"
+          },
+          "500": {
+            "description": "An error occurred while deleting the voice"
+          }
+        }
+      }
+    },
+    "/voices/fetch": {
+      "post": {
+        "summary": "Fetch voices based on criteria",
+        "tags": [
+          "Voices"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Voices retrieved successfully"
+          },
+          "500": {
+            "description": "An error occurred while retrieving voices"
           }
         }
       }
     }
   },
-  "components": {
-    "schemas": {
-      "Plant": {
-        "required": [
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "description": "The name of the plant",
-            "type": "string"
-          },
-          "tag": {
-            "description": "Tag to specify the type",
-            "type": "string"
-          }
-        }
-      },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
-          },
-          {
-            "required": [
-              "id"
-            ],
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          }
-        ]
-      },
-      "Error": {
-        "required": [
-          "error",
-          "message"
-        ],
-        "type": "object",
-        "properties": {
-          "error": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
-          }
-        }
-      }
+  "components": {},
+  "tags": [
+    {
+      "name": "Actions",
+      "description": "Action management APIs"
     },
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer"
-      }
+    {
+      "name": "Agents",
+      "description": "Agent management APIs"
+    },
+    {
+      "name": "API Keys",
+      "description": "API Key management endpoints"
+    },
+    {
+      "name": "Billing",
+      "description": "Billing management APIs"
+    },
+    {
+      "name": "Calls",
+      "description": "Call management APIs"
+    },
+    {
+      "name": "Campaigns",
+      "description": "Campaign management APIs"
+    },
+    {
+      "name": "Cards",
+      "description": "Card management APIs"
+    },
+    {
+      "name": "Companies",
+      "description": "Company management APIs"
+    },
+    {
+      "name": "DIDs",
+      "description": "DID management APIs"
+    },
+    {
+      "name": "Groups",
+      "description": "Group management APIs"
+    },
+    {
+      "name": "Knowledge",
+      "description": "Knowledge management APIs"
+    },
+    {
+      "name": "Leads",
+      "description": "Lead management APIs"
+    },
+    {
+      "name": "Plans",
+      "description": "Plan management APIs"
+    },
+    {
+      "name": "Rates",
+      "description": "Rate management APIs"
+    },
+    {
+      "name": "Roles",
+      "description": "Role management APIs"
+    },
+    {
+      "name": "Templates",
+      "description": "Agent Template management APIs"
+    },
+    {
+      "name": "Tickets",
+      "description": "Ticket management APIs"
+    },
+    {
+      "name": "Users",
+      "description": "User management endpoints"
+    },
+    {
+      "name": "Voices",
+      "description": "Voice management APIs"
     }
-  }
+  ]
 }
