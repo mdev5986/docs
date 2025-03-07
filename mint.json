@@ -1,9 +1,9 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "HeyVoiceFlow",
+  "name": "Voismo AI",
   "logo": {
-    "dark": "/logo/dark.svg",
-    "light": "/logo/light.svg"
+    "dark": "/logo/dark.png",
+    "light": "/logo/light.png"
   },
   "favicon": "/favicon.svg",
   "colors": {
@@ -15,30 +15,29 @@
       "to": "#A27BFF"
     }
   },
-  "topbarLinks": [
-    {
-      "name": "Support",
-      "url": "mailto:support@heyvoiceflow.com"
-    }
-  ],
   "topbarCtaButton": {
     "name": "Launch App",
-    "url": "http://3.229.150.138:5173/"
+    "url": "http://voismoai.com/"
   },
   "navigation": [
     {
       "group": "Oevrview",
       "pages": [
         "introduction",
-        "core-technologies"
+        "getting-start",
+        "team",
+        "usecases",
+        "cutomizationguide",
+        "pricing"
       ]
     },
     {
-      "group": "Quick Start",
+      "group": "How It Works",
       "pages": [
-        "essentials/dashboard",
-        "essentials/agent",
-        "essentials/calls"
+        "/works/howworks",
+        "/works/dashboard",
+        "/works/createassistant",
+        "/works/callhistory"
       ]
     }
   ],
