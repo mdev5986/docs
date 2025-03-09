@@ -19,9 +19,28 @@
     "name": "Launch App",
     "url": "http://voismoai.com/"
   },
+  "openapi": [
+    "/openapi.json"
+  ],
+  "api": {
+    "baseUrl": "https://api.voismoai.com/api/v1",
+    "auth": {
+      "method": "bearer"
+    }
+  },
+  "tabs": [
+    {
+      "name": "Guides",
+      "url": "guides"
+    },
+    {
+      "name": "API Reference",
+      "url": "api-reference"
+    }
+  ],
   "navigation": [
     {
-      "group": "Oevrview",
+      "group": "Overview",
       "pages": [
         "introduction",
         "getting-start",
@@ -29,6 +48,18 @@
         "usecases",
         "cutomizationguide",
         "pricing"
+      ]
+    },
+    {
+      "group": "API Reference",
+      "pages": [
+        "api-reference/introduction"
+      ]
+    },
+    {
+      "group": "Call",
+      "pages": [
+        "api-reference/endpoint/create-web-call"
       ]
     },
     {
